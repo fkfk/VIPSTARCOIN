@@ -22,10 +22,12 @@
 #include <stdint.h>
 
 #include <boost/assign/list_of.hpp>
+#include <boost/multiprecision/cpp_int.hpp>
 
 #include <univalue.h>
 
 using namespace std;
+using namespace boost::multiprecision;
 
 UniValue getdgpinfo(const JSONRPCRequest& request)
 {
@@ -550,7 +552,7 @@ UniValue getaddressbalance(const JSONRPCRequest& request)
     }
 
     CAmount balance = 0;
-    CAmount received = 0;
+    int256_t received = 0;
     CAmount immature = 0;
 
     for (std::vector<std::pair<CAddressIndexKey, CAmount> >::const_iterator it=addressIndex.begin(); it!=addressIndex.end(); it++) {

@@ -14,6 +14,10 @@
 
 #include "univalue.h"
 
+#include <boost/multiprecision/cpp_int.hpp>
+
+using namespace boost::multiprecision;
+
 namespace 
 {
 static bool ParsePrechecks(const std::string& str)
@@ -129,6 +133,15 @@ bool UniValue::setInt(uint64_t val_)
 }
 
 bool UniValue::setInt(int64_t val_)
+{
+    ostringstream oss;
+
+    oss << val_;
+
+    return setNumStr(oss.str());
+}
+
+bool UniValue::setInt(int256_t val_)
 {
     ostringstream oss;
 

@@ -16,6 +16,10 @@
 #include <sstream>        // .get_int64()
 #include <utility>        // std::pair
 
+#include <boost/multiprecision/cpp_int.hpp>
+
+using namespace boost::multiprecision;
+
 class UniValue {
 public:
     enum VType { VNULL, VOBJ, VARR, VSTR, VNUM, VBOOL, };
@@ -29,6 +33,9 @@ public:
         setInt(val_);
     }
     UniValue(int64_t val_) {
+        setInt(val_);
+    }
+    UniValue(int256_t val_) {
         setInt(val_);
     }
     UniValue(bool val_) {
@@ -57,6 +64,7 @@ public:
     bool setInt(uint64_t val);
     bool setInt(int64_t val);
     bool setInt(int val_) { return setInt((int64_t)val_); }
+    bool setInt(int256_t val);
     bool setFloat(double val);
     bool setStr(const std::string& val);
     bool setArray();
@@ -188,6 +196,13 @@ static inline std::pair<std::string,UniValue> Pair(const char *cKey, int64_t i64
 {
     std::string key(cKey);
     UniValue uVal(i64Val);
+    return std::make_pair(key, uVal);
+}
+
+static inline std::pair<std::string,UniValue> Pair(const char *cKey, int256_t i256Val)
+{
+    std::string key(cKey);
+    UniValue uVal(i256Val);
     return std::make_pair(key, uVal);
 }
 
