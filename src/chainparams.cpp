@@ -119,7 +119,7 @@ public:
         consensus.powLimit = uint256S("0000ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
         consensus.posLimit = uint256S("00000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
         consensus.checkpointPubKey = "714b98243f1e0f15567a4afec1c2b9b756fc3762e7c560dc11aa94c2014694876ab8719f624a101fd583e735f4bad5a2f956e1b86ec929ec20e80d98946b9644dc";
-        consensus.vAlertPubKey = ParseHex("1ccdb77fde7d2f74e3c889395ff5cc4364ccd53f9a82dd717750d40cfd7d7aa0eee4b140dd9a1939040389abc0566c935f65d0a2c0f44582ea274eda425ef57852");
+        consensus.vAlertPubKey = ParseHex("04f429354a48cec0b163f358ded4779ecd561a4b69688f6208ba5a202dbb9e6e3d24a0d8b9896b48db4c4dac256255aac46010f672c39206e2331f16b6d3875eae");
         consensus.nTargetTimespan = 120;
         consensus.fPowAllowMinDifficultyBlocks = false;
         consensus.fPowNoRetargeting = false;
@@ -190,6 +190,7 @@ public:
             boost::assign::map_list_of
             ( 0, uint256S("0000d068e1d30f79fb64446137106be9c6ee69a6a722295c131506b1ee09b77c"))
             ( 1000, uint256S("0000966ea0fed775d527fb31902270f01cafdfe53403be884080e2203bd43c74"))
+            ( 244000, uint256S("0000000000261d023630c17c99b686bc251eca6e044c75191d83d7f35cff530d"))
         };
 
         chainTxData = ChainTxData{
@@ -213,12 +214,12 @@ class CTestNetParams : public CChainParams {
 public:
     CTestNetParams() {
         strNetworkID = "test";
-        consensus.nSubsidyHalvingInterval = 7680000; // Halving every 14.6 years
+        consensus.nSubsidyHalvingInterval = 525600 ; // PoS Halving every 1 years
         consensus.powLimit = uint256S("0000ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
         consensus.posLimit = uint256S("00000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
         consensus.checkpointPubKey = "04c7617702e41c0da3a6af3e6a3aa5305e1df312308637abaa86775bb09d3ed797a02351a298a464940a7460c0833ba7ead0ff45c8a735e9b46e0862e56bb79f98";
-        consensus.vAlertPubKey = ParseHex("04b5f68dc8fa4ff5ef8585722585c89041b218b88249a30b5f44a65ed927ef84bd3e68e73cc77a9fbf71ee416b00fec2fe4cf3381396dfd17b2d089b69acc61023");
-        consensus.nTargetTimespan = 10;
+        consensus.vAlertPubKey = ParseHex("04208bb802d593cd4d4aeb95a00c99928787b49f694638362fb0c86b38186f6f60524050978ee24dba821aa4ce85a721bb6d05a7ef0e52c9b6f9a5ae278f45b8b7");
+        consensus.nTargetTimespan = 120;
         consensus.fPowAllowMinDifficultyBlocks = false;
         consensus.fPowNoRetargeting = false;
         consensus.fPoSNoRetargeting = false;
@@ -242,16 +243,16 @@ public:
         consensus.vDeployments[Consensus::DEPLOYMENT_SEGWIT].nTimeout = 999999999999ULL;
 
         // The best chain should have at least this much work.
-        consensus.nMinimumChainWork = uint256S("0x0000000000000000000000000000000000000000000000000000000000010000"); // qtum
+        //consensus.nMinimumChainWork = uint256S("0x0000000000000000000000000000000000000000000000000000000000010000"); // qtum
 
         // By default assume that the signatures in ancestors of this block are valid.
-        consensus.defaultAssumeValid = uint256S("0x00000000000128796ee387cf110ccb9d2f36cffaf7f73079c995377c65ac0dcc"); //1079274
+        //consensus.defaultAssumeValid = uint256S("0x00000000000128796ee387cf110ccb9d2f36cffaf7f73079c995377c65ac0dcc"); //1079274
 
-        pchMessageStart[0] = 0x2f;
-        pchMessageStart[1] = 0x3e;
-        pchMessageStart[2] = 0x4d;
-        pchMessageStart[3] = 0x5c;
-        nDefaultPort = 14888;
+        pchMessageStart[0] = 0x1a;
+        pchMessageStart[1] = 0x2b;
+        pchMessageStart[2] = 0x3c;
+        pchMessageStart[3] = 0x4d;
+        nDefaultPort = 32915;
         nPruneAfterHeight = 1000;
         startNewChain = false;
 
@@ -266,9 +267,11 @@ public:
         vFixedSeeds.clear();
         vSeeds.clear();
 
-        base58Prefixes[PUBKEY_ADDRESS] = std::vector<unsigned char>(1,100);
+        vSeeds.push_back(CDNSSeedData("test.dnsseed.vipstarcoin.jp", "test.dnsseed.vipstarcoin.jp"));
+
+        base58Prefixes[PUBKEY_ADDRESS] = std::vector<unsigned char>(1,132);
         base58Prefixes[SCRIPT_ADDRESS] = std::vector<unsigned char>(1,110);
-        base58Prefixes[SECRET_KEY] =     std::vector<unsigned char>(1,228);
+        base58Prefixes[SECRET_KEY] =     std::vector<unsigned char>(1,239);
         base58Prefixes[EXT_PUBLIC_KEY] = boost::assign::list_of(0x04)(0x35)(0x87)(0xCF).convert_to_container<std::vector<unsigned char> >();
         base58Prefixes[EXT_SECRET_KEY] = boost::assign::list_of(0x04)(0x35)(0x83)(0x94).convert_to_container<std::vector<unsigned char> >();
 
@@ -307,7 +310,7 @@ public:
         consensus.nSubsidyHalvingInterval = 150;
         consensus.powLimit = uint256S("7fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
         consensus.posLimit = uint256S("7fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
-        consensus.vAlertPubKey = ParseHex("04b5f68dc8fa4ff5ef8585722585c89041b218b88249a30b5f44a65ed927ef84bd3e68e73cc77a9fbf71ee416b00fec2fe4cf3381396dfd17b2d089b69acc61023");
+        consensus.vAlertPubKey = ParseHex("04208bb802d593cd4d4aeb95a00c99928787b49f694638362fb0c86b38186f6f60524050978ee24dba821aa4ce85a721bb6d05a7ef0e52c9b6f9a5ae278f45b8b7");
         consensus.nTargetTimespan = 60;
         consensus.fPowAllowMinDifficultyBlocks = true;
         consensus.fPowNoRetargeting = true;
@@ -330,11 +333,11 @@ public:
         // By default assume that the signatures in ancestors of this block are valid.
         consensus.defaultAssumeValid = uint256S("0x00");
 
-        pchMessageStart[0] = 0x3f;
-        pchMessageStart[1] = 0x4e;
-        pchMessageStart[2] = 0x5d;
-        pchMessageStart[3] = 0x6c;
-        nDefaultPort = 24888;
+        pchMessageStart[0] = 0x2a;
+        pchMessageStart[1] = 0x3b;
+        pchMessageStart[2] = 0x4c;
+        pchMessageStart[3] = 0x5d;
+        nDefaultPort = 33915;
         nPruneAfterHeight = 1000;
         startNewChain = false;
 
@@ -368,7 +371,7 @@ public:
         consensus.nMPoSRewardRecipients = 10;
         consensus.nFirstMPoSBlock = 1325;
 
-        base58Prefixes[PUBKEY_ADDRESS] = std::vector<unsigned char>(1,120);
+        base58Prefixes[PUBKEY_ADDRESS] = std::vector<unsigned char>(1,132);
         base58Prefixes[SCRIPT_ADDRESS] = std::vector<unsigned char>(1,110);
         base58Prefixes[SECRET_KEY] =     std::vector<unsigned char>(1,239);
         base58Prefixes[EXT_PUBLIC_KEY] = boost::assign::list_of(0x04)(0x35)(0x87)(0xCF).convert_to_container<std::vector<unsigned char> >();

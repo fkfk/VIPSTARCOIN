@@ -1445,7 +1445,7 @@ CAmount GetProofOfStakeReward(int nHeight, const Consensus::Params& consensusPar
     if (halvings >= 128)
         return 0;
     nSubsidy >>= halvings;
-    if (nSubsidy < 100)
+    if (nSubsidy < 100 * COIN)
         return 100 * COIN;
     return nSubsidy;
 }
@@ -4182,7 +4182,7 @@ bool CheckBlock(const CBlock& block, CValidationState& state, const Consensus::P
     bool lastWasContract=false;
     // Check transactions
     for (const auto& tx : block.vtx) {
-        if (!CheckTransaction(*tx, state, false))
+        if (!CheckTransaction(*tx, state, true))
             return state.Invalid(false, state.GetRejectCode(), state.GetRejectReason(),
                                  strprintf("Transaction check failed (tx hash %s) %s", tx->GetHash().ToString(),
                                            state.GetDebugMessage()));
