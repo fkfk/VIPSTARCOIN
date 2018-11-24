@@ -1932,6 +1932,7 @@ static DisconnectResult DisconnectBlock(const CBlock& block, CValidationState& s
                 fClean = fClean && res != DISCONNECT_UNCLEAN;
 
                 const auto &undo = txundo.vprevout[j];
+                const bool isTxCoinBase = tx.IsCoinBase();
                 const bool isTxCoinStake = tx.IsCoinStake();
                 const CTxIn input = tx.vin[j];
                 if (fAddressIndex) {
@@ -1946,7 +1947,7 @@ static DisconnectResult DisconnectBlock(const CBlock& block, CValidationState& s
                         // undo spending activity
                         addressIndex.push_back(std::make_pair(CAddressIndexKey(dest.which(), uint160(bytesID), pindex->nHeight, i, hash, j, true), prevout.nValue * -1));                   
                         // restore unspent index
-                        addressUnspentIndex.push_back(std::make_pair(CAddressUnspentKey(dest.which(), uint160(bytesID), input.prevout.hash, input.prevout.n), CAddressUnspentValue(prevout.nValue, prevout.scriptPubKey, undo.nHeight, isTxCoinStake)));
+                        addressUnspentIndex.push_back(std::make_pair(CAddressUnspentKey(dest.which(), uint160(bytesID), input.prevout.hash, input.prevout.n), CAddressUnspentValue(prevout.nValue, prevout.scriptPubKey, undo.nHeight, isTxCoinBase, isTxCoinStake)));
                     }
                 }
                 ///////////////////////////////////////////////////////////////////
@@ -2899,6 +2900,7 @@ bool ConnectBlock(const CBlock& block, CValidationState& state, CBlockIndex* pin
 
             for (unsigned int k = 0; k < tx.vout.size(); k++) {
                 const CTxOut &out = tx.vout[k];
+                const bool isTxCoinBase = tx.IsCoinBase();
                 const bool isTxCoinStake = tx.IsCoinStake();
                 
                 CTxDestination dest;
@@ -2909,7 +2911,7 @@ bool ConnectBlock(const CBlock& block, CValidationState& state, CBlockIndex* pin
                     addressIndex.push_back(std::make_pair(CAddressIndexKey(dest.which(), uint160(bytesID), pindex->nHeight, i, tx.GetHash(), k, false), out.nValue));
                     
                     // record unspent output
-                    addressUnspentIndex.push_back(std::make_pair(CAddressUnspentKey(dest.which(), uint160(bytesID), tx.GetHash(), k), CAddressUnspentValue(out.nValue, out.scriptPubKey, pindex->nHeight, isTxCoinStake)));
+                    addressUnspentIndex.push_back(std::make_pair(CAddressUnspentKey(dest.which(), uint160(bytesID), tx.GetHash(), k), CAddressUnspentValue(out.nValue, out.scriptPubKey, pindex->nHeight, isTxCoinBase, isTxCoinStake)));
                 }
             }
         }

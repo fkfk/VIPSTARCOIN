@@ -614,6 +614,7 @@ struct CAddressUnspentValue {
     CAmount satoshis;
     CScript script;
     int blockHeight;
+    bool coinBase;
     bool coinStake;
 
     ADD_SERIALIZE_METHODS;
@@ -623,13 +624,15 @@ struct CAddressUnspentValue {
         READWRITE(satoshis);
         READWRITE(*(CScriptBase*)(&script));
         READWRITE(blockHeight);
+        READWRITE(coinBase);
         READWRITE(coinStake);
     }
 
-    CAddressUnspentValue(CAmount sats, CScript scriptPubKey, int height, bool isStake) {
+    CAddressUnspentValue(CAmount sats, CScript scriptPubKey, int height, bool isCoinBase, bool isStake) {
         satoshis = sats;
         script = scriptPubKey;
         blockHeight = height;
+        coinBase = isCoinBase;
         coinStake = isStake;
     }
 
@@ -641,6 +644,7 @@ struct CAddressUnspentValue {
         satoshis = -1;
         script.clear();
         blockHeight = 0;
+        coinBase = false;
         coinStake = false;
     }
 
